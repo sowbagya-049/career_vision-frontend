@@ -1,0 +1,135 @@
+.upload-container {
+      padding: 40px 0;
+      min-height: calc(100vh - 70px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .upload-card {
+      background: white;
+      border-radius: 16px;
+      padding: 40px;
+      max-width: 600px;
+      width: 100%;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    }
+    
+    .upload-header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    
+    .upload-header h1 {
+      color: #1a202c;
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    
+    .upload-header p {
+      color: #718096;
+      font-size: 16px;
+    }
+    
+    .upload-area {
+      border: 3px dashed #e2e8f0;
+      border-radius: 12px;
+      padding: 60px 40px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-bottom: 24px;
+    }
+    
+    .upload-area:hover,
+    .upload-area.drag-over {
+      border-color: #667eea;
+      background: rgba(102, 126, 234, 0.05);
+    }
+    
+    .upload-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+    
+    .upload-area h3 {
+      color: #1a202c;
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    
+    .upload-area p {
+      color: #718096;
+    }
+    
+    .selected-file {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px;
+      background: #f7fafc;
+      border-radius: 8px;
+      margin-bottom: 24px;
+    }
+    
+    .file-info {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .file-name {
+      font-weight: 500;
+      color: #1a202c;
+    }
+    
+    .file-size {
+      font-size: 14px;
+      color: #718096;
+    }
+    
+    .loading {
+      text-align: center;
+      padding: 40px;
+    }
+    
+    .loading p {
+      margin-top: 16px;
+      color: #718096;
+    }
+    
+    .upload-result {
+      text-align: center;
+      padding: 32px;
+      background: #f0fff4;
+      border-radius: 8px;
+      border: 1px solid #9ae6b4;
+    }
+    
+    .upload-result h3 {
+      color: #22543d;
+      margin-bottom: 8px;
+    }
+    
+    .upload-result p {
+      color: #276749;
+      margin-bottom: 16px;
+    }
+    
+    .error-message {
+      text-align: center;
+      padding: 32px;
+      background: #fed7d7;
+      border-radius: 8px;
+      border: 1px solid #feb2b2;
+    }
+    
+    .error-message h3 {
+      color: #742a2a;
+      margin-bottom: 8px;
+    }
+    
+    .error-message p {
+      color: #742a2a;
+    }

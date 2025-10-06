@@ -1,0 +1,88 @@
+<div class="timeline-container">
+  <div class="container">
+    <div class="timeline-header">
+      <h1>Career Timeline</h1>
+      <p>Visualize your career journey and milestones</p>
+
+      <div class="filter-controls">
+        <button
+          *ngFor="let type of milestoneTypes"
+          class="filter-btn"
+          [class.active]="selectedType === type.value"
+          (click)="filterByType(type.value)"
+        >
+          {{ type.label }}
+        </button>
+      </div>
+    </div>
+
+    <div class="loading-container" *ngIf="isLoading">
+      <div class="loading-spinner"></div>
+      <p>Loading your career timeline...</p>
+    </div>
+
+    <div class="empty-state" *ngIf="!isLoading && filteredMilestones.length === 0">
+      <div class="empty-icon">📅</div>
+      <h3>No milestones found</h3>
+      <p>Start by adding your first milestone or upload your resume.</p>
+    </div>
+
+    <div class="timeline-content" *ngIf="!isLoading && filteredMilestones.length > 0">
+      <div class="timeline-line"></div>
+
+      <div
+        class="milestone-item"
+        *ngFor="let milestone of filteredMilestones; let i = index"
+        [class.left]="i % 2 === 0"
+        [class.right]="i % 2 === 1"
+      >
+        <div class="milestone-date">
+          {{ timelineService.formatDateRange(milestone.startDate, milestone.endDate, milestone.current) }}
+        </div>
+
+        <div class="milestone-card">
+          <div
+            class="milestone-icon"
+            [style.background-color]="timelineService.getTypeColor(milestone.type)"
+          >
+            {{ timelineService.getTypeIcon(milestone.type) }}
+          </div>
+
+          <div class="milestone-content">
+            <h3>{{ milestone.title }}</h3>
+            <p class="milestone-company" *ngIf="milestone.company">
+              {{ milestone.company }}
+            </p>
+            <p class="milestone-description">{{ milestone.description }}</p>
+
+            <div
+              class="milestone-skills"
+              *ngIf="milestone.skills && milestone.skills.length > 0"
+            >
+              <span class="skill-tag" *ngFor="let skill of milestone.skills">
+                {{ skill }}
+              </span>
+            </div>
+
+            <div class="milestone-meta">
+              <span *ngIf="milestone.location">📍 {{ milestone.location }}</span>
+              <span *ngIf="milestone.startDate">
+                ⏱️
+                {{
+                  timelineService.calculateDuration(
+                    milestone.startDate,
+                    milestone.endDate,
+                    milestone.current
+                  )
+                }}
+              </span>
+              <span *ngIf="milestone.url">
+                <a [href]="milestone.url" target="_blank">View More</a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

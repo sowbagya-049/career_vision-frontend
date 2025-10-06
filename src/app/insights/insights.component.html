@@ -1,0 +1,56 @@
+<div class="insights-container">
+  <h2>Your Career Insights</h2>
+
+  <div *ngIf="isLoading" class="loading-spinner">
+    <p>Loading insights...</p>
+    <!-- You might add a proper spinner icon here -->
+  </div>
+
+  <div *ngIf="errorMessage" class="error-message">
+    <p>{{ errorMessage }}</p>
+    <button (click)="loadInsights()">Retry</button>
+  </div>
+
+  <div *ngIf="insightData$ | async as insights; else noInsights" class="insights-dashboard">
+    <div class="insight-card">
+      <h3>Total Resumes Uploaded</h3>
+      <p class="insight-value">{{ insights.totalResumesUploaded }}</p>
+    </div>
+
+    <div class="insight-card">
+      <h3>Average Score</h3>
+      <p class="insight-value">{{ insights.averageScore | number:'1.1-1' }}%</p>
+    </div>
+
+    <div class="insight-card">
+      <h3>Most Common Skills</h3>
+      <ul class="skill-list">
+        <li *ngFor="let skill of insights.mostCommonSkills">{{ skill }}</li>
+      </ul>
+    </div>
+
+    <div class="insight-card">
+      <h3>Timeline Progress</h3>
+      <ul class="timeline-list">
+        <li *ngFor="let item of insights.timelineProgress">
+          <strong>{{ item.milestone }}:</strong> <span [ngClass]="{'status-completed': item.status === 'Completed', 'status-pending': item.status === 'Pending', 'status-not-started': item.status === 'Not Started'}">{{ item.status }}</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Add more insight cards as needed -->
+
+    <div class="call-to-action">
+      <p>Want to improve your scores or explore more opportunities?</p>
+      <button routerLink="/resume-upload">Upload a New Resume</button>
+      <button routerLink="/recommendations">View Recommendations</button>
+    </div>
+  </div>
+
+  <ng-template #noInsights>
+    <div *ngIf="!isLoading && !errorMessage" class="no-insights">
+      <p>No insights available yet. Start by uploading a resume!</p>
+      <button routerLink="/resume-upload">Get Started</button>
+    </div>
+  </ng-template>
+</div>

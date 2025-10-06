@@ -1,0 +1,56 @@
+<div class="upload-container">
+  <div class="container">
+    <div class="upload-card">
+      <div class="upload-header">
+        <h1>Upload Your Resume</h1>
+        <p>Upload your resume, CV, or any career document to extract milestones</p>
+      </div>
+      
+      <div class="upload-area" 
+           (click)="fileInput.click()"
+           (dragover)="onDragOver($event)"
+           (dragleave)="onDragLeave($event)"
+           (drop)="onDrop($event)"
+           [class.drag-over]="isDragOver">
+        <input 
+          #fileInput
+          type="file"
+          accept=".pdf,.doc,.docx"
+          (change)="onFileSelected($event)"
+          style="display: none;"
+        >
+        
+        <div class="upload-icon">📎</div>
+        <h3>Drop your file here or click to browse</h3>
+        <p>Supports PDF, DOC, DOCX files (Max 10MB)</p>
+      </div>
+
+      <div *ngIf="selectedFile" class="selected-file">
+        <div class="file-info">
+          <!-- FIX: Use safe navigation operator (?.) -->
+          <span class="file-name">{{ selectedFile.name }}</span>
+          <span class="file-size">({{ formatFileSize(selectedFile.size || 0) }})</span>
+        </div>
+        <button class="btn btn-primary" (click)="uploadFile()" [disabled]="isUploading">
+          {{ isUploading ? 'Uploading...' : 'Upload & Extract' }}
+        </button>
+      </div>
+      
+      <div *ngIf="isUploading" class="loading">
+        <div class="loading-spinner"></div>
+        <p>Processing your resume...</p>
+      </div>
+      
+      <div *ngIf="uploadResult" class="upload-result">
+        <h3>✅ Upload Successful!</h3>
+        <p>{{ uploadResult.milestonesFound }} milestones extracted from your resume</p>
+        <button class="btn btn-primary" (click)="goToTimeline()">View Timeline</button>
+      </div>
+
+      <div *ngIf="errorMessage" class="error-message">
+        <h3>❌ Upload Failed</h3>
+        <p>{{ errorMessage }}</p>
+      </div>
+    </div>
+  </div>
+</div>

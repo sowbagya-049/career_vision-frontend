@@ -1,0 +1,6 @@
+/* You can add global styles here or in styles.scss */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
