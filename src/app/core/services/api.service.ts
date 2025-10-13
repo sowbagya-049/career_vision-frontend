@@ -41,7 +41,7 @@ export class ApiService {
     return this.http.post<any>(`${this.baseUrl}/resumes/ai-parse`, { text: resumeText });
   }
  
-
+  
   private getHeaders(contentTypeJson = true): HttpHeaders {
     const token = localStorage.getItem('token');
     let headersConfig: { [name: string]: string } = {

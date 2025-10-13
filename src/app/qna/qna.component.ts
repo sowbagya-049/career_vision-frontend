@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ApiService } from '../core/services/api.service';
+import { QnaService } from './qna.service';
+import { ActivatedRoute } from '@angular/router';
 
 interface QnaMessage {
   text: string;
@@ -21,6 +22,10 @@ interface QnaMessage {
         <div class="qna-header">
           <h1>Ask CareerVision</h1>
           <p>Get insights about your career, skills, and opportunities</p>
+          <div class="milestone-context" *ngIf="milestoneContext">
+            <span class="context-icon">📍</span>
+            <span class="context-text">Discussing: {{ milestoneContext }}</span>
+          </div>
         </div>
         
         <div class="chat-container">
@@ -37,7 +42,7 @@ interface QnaMessage {
                     <li>Recommending courses for growth</li>
                     <li>Career advancement strategies</li>
                   </ul>
-                  Try asking one of the questions below!
+                  {{milestoneId ? 'I see you have a specific milestone in mind. ' : ''}}Try asking one of the questions below!
                 </div>
               </div>
             </div>
@@ -145,6 +150,22 @@ interface QnaMessage {
     
     .qna-header p {
       color: rgba(255, 255, 255, 0.9);
+      font-size: 18px;
+    }
+
+    .milestone-context {
+      margin-top: 16px;
+      padding: 12px 20px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: white;
+      font-size: 14px;
+    }
+
+    .context-icon {
       font-size: 18px;
     }
     
@@ -424,24 +445,41 @@ interface QnaMessage {
     }
   `]
 })
-export class QnaComponent {
+export class QnaComponent implements OnInit {
   messages: QnaMessage[] = [];
   currentQuestion = '';
   lastQuestion = '';
   isTyping = false;
   errorMessage = '';
+  milestoneId?: string;
+  milestoneContext?: string;
 
   quickQuestions = [
-    "Do I have any career gaps?",
-    "What are my strongest skills?",
-    "Which jobs match my profile?",
-    "What courses should I take?",
-    "How can I advance my career?",
-    "Show me my skill distribution"
+    "What are the gaps in my career timeline?",
+    "What skills should I focus on developing?",
+    "Which jobs best match my experience?",
+    "What courses would help me advance?",
+    "How can I improve my career trajectory?",
+    "Analyze my skill distribution"
   ];
 
-  constructor(private apiService: ApiService) {
+  constructor(
+    private qnaService: QnaService,
+    private route: ActivatedRoute
+  ) {
     console.log('QnA Component initialized');
+  }
+
+  ngOnInit(): void {
+    // Check if milestone ID is passed via query params
+    this.route.queryParams.subscribe(params => {
+      this.milestoneId = params['milestoneId'];
+      this.milestoneContext = params['milestoneTitle'];
+      
+      if (this.milestoneId) {
+        console.log('QnA opened for milestone:', this.milestoneId);
+      }
+    });
   }
 
   askQuestion(question: string): void {
@@ -467,8 +505,14 @@ export class QnaComponent {
     this.isTyping = true;
     this.scrollToBottom();
 
-    // Call API (no /api prefix needed - already in environment.apiUrl)
-    this.apiService.post<any>('/qna/ask', { question: trimmedQuestion }).subscribe({
+    // Prepare request with optional milestone ID
+    const request: any = { question: trimmedQuestion };
+    if (this.milestoneId) {
+      request.milestoneId = this.milestoneId;
+    }
+
+    // Call API via service
+    this.qnaService.askQuestion(request).subscribe({
       next: (response) => {
         console.log('QnA Response:', response);
         this.isTyping = false;
@@ -490,7 +534,7 @@ export class QnaComponent {
       error: (error) => {
         console.error('QnA Error:', error);
         this.isTyping = false;
-        this.showError(error.message || 'Failed to get response. Please try again.');
+        this.showError(error.error?.message || 'Failed to get response. Please try again.');
         this.scrollToBottom();
       }
     });
@@ -511,9 +555,11 @@ export class QnaComponent {
   }
 
   formatMessage(text: string): string {
-    // Convert markdown-style bold to HTML
+    // Convert markdown-style formatting to HTML
     return text
       .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(.*?)\*/g, '<em>$1</em>')
+      .replace(/\n\n/g, '<br><br>')
       .replace(/\n/g, '<br>');
   }
 
