@@ -1,34 +1,74 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { delay } from 'rxjs/operators';
-import { InsightData } from './insights.module'; // ✅ import shared interface
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { ApiService } from '../core/services/api.service';
+
+export interface Insight {
+  id: string;
+  type: 'strength' | 'gap' | 'recommendation' | 'trend';
+  title: string;
+  description: string;
+  score: number;
+}
+
+export interface CareerGapData {
+  year: string;
+  activeMonths: number;
+}
+
+export interface SkillDistribution {
+  skill: string;
+  count: number;
+}
+
+export interface CareerGrowthData {
+  year: string;
+  skillLevel: number;
+  experienceLevel: number;
+}
+
+export interface IndustryComparison {
+  metric: string;
+  user: number;
+  industry: number;
+}
+
+export interface AnalyticsData {
+  careerGaps: CareerGapData[];
+  skillsDistribution: SkillDistribution[];
+  careerGrowthTrend: CareerGrowthData[];
+  industryComparison: IndustryComparison[];
+}
 
 @Injectable({
   providedIn: 'root'
 })
-export class InsightService {
-  private apiUrl = '/api/insights'; // Adjust your API endpoint
+export class InsightsService {
+  constructor(private apiService: ApiService) {}
 
-  constructor(private http: HttpClient) {}
+  // Get career insights
+  getCareerInsights(): Observable<Insight[]> {
+    return this.apiService.get<Insight[]>('/insights/career').pipe(
+      map(response => response.data || [])
+    );
+  }
 
-  getInsights(): Observable<InsightData> {
-    // ✅ Real HTTP request (uncomment when API is ready)
-    // return this.http.get<InsightData>(this.apiUrl);
+  // Get analytics data for charts
+  getAnalyticsData(): Observable<AnalyticsData> {
+    return this.apiService.get<AnalyticsData>('/insights/analytics').pipe(
+      map(response => response.data || {
+        careerGaps: [],
+        skillsDistribution: [],
+        careerGrowthTrend: [],
+        industryComparison: []
+      })
+    );
+  }
 
-    // ✅ Mock data for now
-    const mockData: InsightData = {
-      totalResumesUploaded: 15,
-      averageScore: 82.5,
-      mostCommonSkills: ['JavaScript', 'TypeScript', 'Angular', 'Node.js', 'Python'],
-      timelineProgress: [
-        { milestone: 'Application Submitted', status: 'Completed' },
-        { milestone: 'First Interview', status: 'Completed' },
-        { milestone: 'Technical Assessment', status: 'Pending' },
-        { milestone: 'Offer Received', status: 'Not Started' }
-      ]
-    };
-
-    return of(mockData).pipe(delay(1000)); // Simulate network delay
+  // Get career report
+  getCareerReport(): Observable<any> {
+    return this.apiService.post<any>('/insights/report', {}).pipe(
+      map(response => response.data)
+    );
   }
 }

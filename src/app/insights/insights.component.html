@@ -1,56 +1,190 @@
 <div class="insights-container">
-  <h2>Your Career Insights</h2>
-
-  <div *ngIf="isLoading" class="loading-spinner">
-    <p>Loading insights...</p>
-    <!-- You might add a proper spinner icon here -->
+  <div class="insights-header">
+    <h1>📊 Career Insights & Analytics</h1>
+    <p>Comprehensive analysis of your career profile and growth</p>
   </div>
 
-  <div *ngIf="errorMessage" class="error-message">
+  <!-- Loading State -->
+  <div *ngIf="isLoadingInsights" class="loading-section">
+    <div class="spinner"></div>
+    <p>Loading your insights...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="errorMessage && !isLoadingInsights" class="error-section">
+    <div class="error-icon">⚠️</div>
     <p>{{ errorMessage }}</p>
-    <button (click)="loadInsights()">Retry</button>
+    <button class="retry-btn" (click)="retryLoad()">Retry</button>
   </div>
 
-  <div *ngIf="insightData$ | async as insights; else noInsights" class="insights-dashboard">
-    <div class="insight-card">
-      <h3>Total Resumes Uploaded</h3>
-      <p class="insight-value">{{ insights.totalResumesUploaded }}</p>
+  <!-- Insights Content -->
+  <div *ngIf="!isLoadingInsights && !errorMessage">
+    
+    <!-- Insight Cards -->
+    <div class="insights-grid">
+      <div 
+        *ngFor="let insight of insights" 
+        class="insight-card"
+        [class.strength]="insight.type === 'strength'"
+        [class.gap]="insight.type === 'gap'"
+        [class.recommendation]="insight.type === 'recommendation'"
+        [class.trend]="insight.type === 'trend'"
+      >
+        <div class="insight-header">
+          <span class="insight-icon">{{ getInsightIcon(insight.type) }}</span>
+          <span 
+            class="insight-score"
+            [style.color]="getScoreColor(insight.score)"
+          >
+            {{ insight.score }}
+          </span>
+        </div>
+        <h3>{{ insight.title }}</h3>
+        <p>{{ insight.description }}</p>
+        <div class="insight-progress">
+          <div 
+            class="progress-bar"
+            [style.width.%]="insight.score"
+            [style.background-color]="getInsightColor(insight.type)"
+          ></div>
+        </div>
+      </div>
     </div>
 
-    <div class="insight-card">
-      <h3>Average Score</h3>
-      <p class="insight-value">{{ insights.averageScore | number:'1.1-1' }}%</p>
+    <!-- Analytics Section -->
+    <div *ngIf="!isLoadingAnalytics && analyticsData" class="analytics-section">
+      <h2>📈 Career Analytics</h2>
+      
+      <div class="charts-grid">
+        
+        <!-- Career Gaps Chart -->
+        <div class="chart-card">
+          <h3>Career Activity Timeline</h3>
+          <p class="chart-subtitle">Active months per year</p>
+          <div class="simple-bar-chart">
+            <div 
+              *ngFor="let item of careerGapsData" 
+              class="bar-item"
+              [title]="item.year + ': ' + item.activeMonths + ' months'"
+            >
+              <div class="bar-label">{{ item.year }}</div>
+              <div class="bar-wrapper">
+                <div 
+                  class="bar-fill" 
+                  [style.height.%]="(item.activeMonths / 12) * 100"
+                ></div>
+              </div>
+              <div class="bar-value">{{ item.activeMonths }}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Skills Distribution Chart -->
+        <div class="chart-card">
+          <h3>Top Skills Distribution</h3>
+          <p class="chart-subtitle">Most frequently used skills</p>
+          <div class="skills-chart">
+            <div 
+              *ngFor="let skill of skillsData" 
+              class="skill-item"
+              [title]="skill.skill + ': ' + skill.count + ' times'"
+            >
+              <div class="skill-name">{{ skill.skill }}</div>
+              <div class="skill-bar-wrapper">
+                <div 
+                  class="skill-bar" 
+                  [style.width.%]="(skill.count / skillsData[0]?.count * 100)"
+                ></div>
+              </div>
+              <div class="skill-count">{{ skill.count }}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Career Growth Chart -->
+        <div class="chart-card full-width">
+          <h3>Career Growth Trend</h3>
+          <p class="chart-subtitle">Skill & experience progression over time</p>
+          <div class="growth-chart">
+            <div class="growth-legend">
+              <span class="legend-item"><span class="dot skills"></span> Skill Level</span>
+              <span class="legend-item"><span class="dot experience"></span> Experience Level</span>
+            </div>
+            <div class="growth-bars">
+              <div *ngFor="let item of growthData" class="growth-year">
+                <div class="year-label">{{ item.year }}</div>
+                <div class="dual-bars">
+                  <div 
+                    class="growth-bar skills" 
+                    [style.height.%]="item.skillLevel"
+                    [title]="'Skill Level: ' + item.skillLevel"
+                  ></div>
+                  <div 
+                    class="growth-bar experience" 
+                    [style.height.%]="item.experienceLevel"
+                    [title]="'Experience Level: ' + item.experienceLevel"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Industry Comparison Chart -->
+        <div class="chart-card full-width">
+          <h3>Industry Comparison</h3>
+          <p class="chart-subtitle">Your profile vs industry average</p>
+          <div class="comparison-chart">
+            <div *ngFor="let item of comparisonData" class="comparison-item">
+              <div class="metric-label">{{ item.metric }}</div>
+              <div class="comparison-bars">
+                <div class="comparison-row user">
+                  <span class="bar-label">You</span>
+                  <div class="comparison-bar-wrapper">
+                    <div 
+                      class="comparison-bar" 
+                      [style.width.%]="item.user"
+                    ></div>
+                  </div>
+                  <span class="bar-value">{{ item.user }}%</span>
+                </div>
+                <div class="comparison-row industry">
+                  <span class="bar-label">Industry</span>
+                  <div class="comparison-bar-wrapper">
+                    <div 
+                      class="comparison-bar" 
+                      [style.width.%]="item.industry"
+                    ></div>
+                  </div>
+                  <span class="bar-value">{{ item.industry }}%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
 
-    <div class="insight-card">
-      <h3>Most Common Skills</h3>
-      <ul class="skill-list">
-        <li *ngFor="let skill of insights.mostCommonSkills">{{ skill }}</li>
-      </ul>
+    <!-- Action Buttons -->
+    <div class="action-section">
+      <h2>🚀 Take Action</h2>
+      <p>Improve your career profile based on these insights</p>
+      <div class="action-buttons">
+        <button class="action-btn primary" routerLink="/resume-upload">
+          <span class="btn-icon">📄</span>
+          Upload Resume
+        </button>
+        <button class="action-btn secondary" routerLink="/recommendations">
+          <span class="btn-icon">🎯</span>
+          View Recommendations
+        </button>
+        <button class="action-btn tertiary" routerLink="/qna">
+          <span class="btn-icon">💬</span>
+          Ask Questions
+        </button>
+      </div>
     </div>
 
-    <div class="insight-card">
-      <h3>Timeline Progress</h3>
-      <ul class="timeline-list">
-        <li *ngFor="let item of insights.timelineProgress">
-          <strong>{{ item.milestone }}:</strong> <span [ngClass]="{'status-completed': item.status === 'Completed', 'status-pending': item.status === 'Pending', 'status-not-started': item.status === 'Not Started'}">{{ item.status }}</span>
-        </li>
-      </ul>
-    </div>
-
-    <!-- Add more insight cards as needed -->
-
-    <div class="call-to-action">
-      <p>Want to improve your scores or explore more opportunities?</p>
-      <button routerLink="/resume-upload">Upload a New Resume</button>
-      <button routerLink="/recommendations">View Recommendations</button>
-    </div>
   </div>
-
-  <ng-template #noInsights>
-    <div *ngIf="!isLoading && !errorMessage" class="no-insights">
-      <p>No insights available yet. Start by uploading a resume!</p>
-      <button routerLink="/resume-upload">Get Started</button>
-    </div>
-  </ng-template>
 </div>
