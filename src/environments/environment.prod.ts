@@ -1,5 +1,5 @@
 
 export const environment = {
   production: true,
-  apiBaseUrl: 'https://career-vision-backend.onrender.com/api'  // use your Render URL
+  apiUrl: 'https://career-vision-backend.onrender.com/api'  // use your Render URL
 };

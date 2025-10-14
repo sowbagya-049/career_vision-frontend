@@ -24,24 +24,22 @@ export interface Pagination {
   providedIn: 'root'
 })
 export class ApiService {
-  private baseUrl = environment.apiUrl;
+  private apiUrl = environment.apiUrl;
   private loadingSubject = new BehaviorSubject<boolean>(false);
   public loading$ = this.loadingSubject.asObservable();
 
   constructor(private http: HttpClient) {
-    console.log('🔧 ApiService initialized with baseUrl:', this.baseUrl);
+    console.log('🔧 ApiService initialized with baseUrl:', this.apiUrl);
   }
 
   private setLoading(isLoading: boolean): void {
     this.loadingSubject.next(isLoading);
   }
   
-  // frontend/src/app/core/services/api.service.ts
   aiParseResume(resumeText: string) {
-    return this.http.post<any>(`${this.baseUrl}/resumes/ai-parse`, { text: resumeText });
+    return this.http.post<any>(`${this.apiUrl}/resumes/ai-parse`, { text: resumeText });
   }
- 
-  
+
   private getHeaders(contentTypeJson = true): HttpHeaders {
     const token = localStorage.getItem('token');
     let headersConfig: { [name: string]: string } = {
@@ -54,7 +52,7 @@ export class ApiService {
   }
 
   get<T>(endpoint: string): Observable<ApiResponse<T>> {
-    const url = `${this.baseUrl}${endpoint}`;
+    const url = `${this.apiUrl}${endpoint}`;
     console.log('📤 GET request to:', url);
 
     this.setLoading(true);
@@ -67,7 +65,7 @@ export class ApiService {
   }
 
   post<T>(endpoint: string, data: any): Observable<ApiResponse<T>> {
-    const url = `${this.baseUrl}${endpoint}`;
+    const url = `${this.apiUrl}${endpoint}`;
     console.log('📤 POST request to:', url);
     console.log('📦 POST data:', data);
 
@@ -81,7 +79,7 @@ export class ApiService {
   }
 
   put<T>(endpoint: string, data: any): Observable<ApiResponse<T>> {
-    const url = `${this.baseUrl}${endpoint}`;
+    const url = `${this.apiUrl}${endpoint}`;
     console.log('📤 PUT request to:', url);
 
     this.setLoading(true);
@@ -94,7 +92,7 @@ export class ApiService {
   }
 
   delete<T>(endpoint: string): Observable<ApiResponse<T>> {
-    const url = `${this.baseUrl}${endpoint}`;
+    const url = `${this.apiUrl}${endpoint}`;
     console.log('📤 DELETE request to:', url);
 
     this.setLoading(true);
@@ -107,7 +105,7 @@ export class ApiService {
   }
 
   upload<T>(endpoint: string, formData: FormData): Observable<ApiResponse<T>> {
-    const url = `${this.baseUrl}${endpoint}`;
+    const url = `${this.apiUrl}${endpoint}`;
     console.log('📤 UPLOAD request to:', url);
     formData.forEach((value, key) => console.log(` - ${key}:`, value));
 
@@ -131,10 +129,8 @@ export class ApiService {
     let errorMessage = 'Something went wrong. Please try again.';
 
     if (error.error instanceof ErrorEvent) {
-      // Client-side/network error
       errorMessage = error.error.message;
     } else {
-      // Server-side error
       if (error.error && typeof error.error === 'object') {
         if (error.error.message) {
           errorMessage = error.error.message;
@@ -156,7 +152,6 @@ export class ApiService {
       }
     }
 
-    // Return observable with user-facing error message
     return throwError(() => ({
       message: errorMessage,
       status: error.status,
