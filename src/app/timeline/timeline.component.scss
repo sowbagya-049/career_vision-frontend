@@ -80,8 +80,8 @@
 }
 
 .milestone-date {
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
+  background: rgba(249, 244, 244, 0.1);
+  color: rgb(13, 0, 0);
   padding: 8px 16px;
   border-radius: 20px;
   font-weight: 600;
@@ -228,7 +228,7 @@
 }
 
 .loading-container p {
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(27, 3, 3, 0.8);
   margin-top: 16px;
   font-size: 16px;
 }
@@ -277,7 +277,7 @@
 
 .btn-primary {
   background: #667eea;
-  color: white;
+  color: rgb(123, 116, 116);
 }
 
 .btn-primary:hover {
@@ -310,13 +310,15 @@
     padding: 24px;
   }
   
-  .milestone-date {
-    left: 30px;
-    transform: translateX(-50%);
-    font-size: 12px;
-    padding: 6px 12px;
-  }
   
+
+
+  .milestone-date:hover {
+    background: #667eea;
+    color: #ffffff;
+    border: 2px solid #ffffff;
+  }
+
   .milestone-content h3 {
     font-size: 18px;
   }
