@@ -254,7 +254,7 @@ export class LoginComponent {
         }
       });
     } else {
-      console.log(' Form is invalid:', this.loginForm.errors);
+      console.log('❌ Form is invalid:', this.loginForm.errors);
       Object.keys(this.loginForm.controls).forEach(key => {
         const control = this.loginForm.get(key);
         if (control && control.invalid) {
