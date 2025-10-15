@@ -4,7 +4,7 @@ export interface AuthData {
   firstName?: string;
   lastName?: string;
 }
-
+// Interface for the response from the authentication API
 export interface AuthResponse {
   success: any;
   token: string;

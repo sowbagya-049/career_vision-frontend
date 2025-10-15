@@ -19,6 +19,7 @@ import { TimelineComponent } from './timeline/timeline.component';
 import { AuthInterceptor } from './auth/auth-interceptor';
 import { ResumeUploadComponent } from './resume-upload/resume-upload.component';
 
+// imports
 @NgModule({
   declarations: [
     AppComponent,

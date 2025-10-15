@@ -4,6 +4,7 @@ import { Observable, throwError, BehaviorSubject } from 'rxjs';
 import { catchError, tap, finalize } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 
+// Generic interface for API responses
 export interface ApiResponse<T> {
   success: boolean;
   data?: T;

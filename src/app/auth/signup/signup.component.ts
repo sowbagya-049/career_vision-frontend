@@ -248,7 +248,7 @@ export class SignupComponent {
         }
       });
     } else {
-      console.log('❌ Form is invalid');
+      console.log(' Form is invalid');
       Object.keys(this.signupForm.controls).forEach(key => {
         const control = this.signupForm.get(key);
         if (control && control.invalid) {

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ApiService } from '../core/services/api.service';
 import { Router } from '@angular/router';
 
+
 @Component({
   selector: 'app-resume-upload',
   templateUrl: './resume-upload.component.html',

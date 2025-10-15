@@ -8,6 +8,7 @@ export interface QnaRequest {
   milestoneId?: string;
 }
 
+
 export interface QnaResponseData {
   answer: string;
   confidence: number;
