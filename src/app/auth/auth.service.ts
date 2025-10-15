@@ -5,6 +5,7 @@ import { Observable, BehaviorSubject, throwError } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
+// Interface for user data
 export interface User {
   id: string;
   email: string;

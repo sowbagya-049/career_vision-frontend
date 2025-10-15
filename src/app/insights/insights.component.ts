@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { InsightsService, Insight, AnalyticsData } from './insights.service';
 
+// Insights component to display career insights and analytics
 @Component({
   selector: 'app-insights',
   templateUrl: './insights.component.html',

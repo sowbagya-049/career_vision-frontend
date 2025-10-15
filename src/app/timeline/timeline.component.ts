@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TimelineService, Milestone } from './timeline.service';
 
+
 @Component({
   selector: 'app-timeline',
   templateUrl: './timeline.component.html',

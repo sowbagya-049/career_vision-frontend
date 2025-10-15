@@ -4,6 +4,7 @@ import { AuthService } from '../auth/auth.service';
 import { DashboardService } from './dashboard.service';
 import { Observable } from 'rxjs';
 
+// Dashboard component to display user stats and quick actions
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',

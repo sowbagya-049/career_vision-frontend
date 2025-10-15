@@ -1,3 +1,4 @@
+// course interface
 export interface Course {
   id: string;
   title: string;

@@ -12,6 +12,7 @@ interface QnaMessage {
   category?: string;
 }
 
+
 @Component({
   selector: 'app-qna',
   standalone: true,

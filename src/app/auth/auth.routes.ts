@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 
+// Define authentication-related routes
 export const authRoutes: Routes = [
   {
     path: 'login',
