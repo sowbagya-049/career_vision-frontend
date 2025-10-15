@@ -1,0 +1,275 @@
+.recommendations-container {
+      padding: 40px 0;
+      min-height: calc(100vh - 70px);
+    }
+    
+    .recommendations-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    
+    .recommendations-header h1 {
+      color: white;
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    
+    .recommendations-header p {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 18px;
+      margin-bottom: 32px;
+    }
+    
+    .tab-controls {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+    }
+    
+    .tab-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+    
+    .tab-btn:hover,
+    .tab-btn.active {
+      background: white;
+      color: #667eea;
+    }
+    
+    .tab-content {
+      background: white;
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    }
+    
+    .content-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+    }
+    
+    .content-header h2 {
+      color: #1a202c;
+      font-size: 24px;
+      font-weight: 600;
+      margin: 0;
+    }
+    
+    .recommendations-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+      gap: 24px;
+    }
+    
+    .job-card,
+    .course-card {
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 24px;
+      transition: all 0.3s ease;
+    }
+    
+    .job-card:hover,
+    .course-card:hover {
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      transform: translateY(-2px);
+    }
+    
+    .card-header {
+      margin-bottom: 16px;
+    }
+    
+    .job-title,
+    .course-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 8px;
+    }
+    
+    .job-title h3,
+    .course-title h3 {
+      color: #1a202c;
+      font-size: 18px;
+      font-weight: 600;
+      margin: 0;
+      flex: 1;
+      margin-right: 12px;
+    }
+    
+    .match-score {
+      background: #667eea;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+    
+    .job-company,
+    .course-provider {
+      color: #4a5568;
+    }
+    
+    .job-company strong,
+    .course-provider strong {
+      color: #667eea;
+      margin-right: 8px;
+    }
+    
+    .job-details,
+    .course-details {
+      margin-bottom: 20px;
+    }
+    
+    .job-description,
+    .course-description {
+      color: #718096;
+      line-height: 1.6;
+      margin-bottom: 16px;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    
+    .job-salary {
+      color: #38a169;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    
+    .course-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .meta-label {
+      font-weight: 500;
+      color: #4a5568;
+      min-width: 60px;
+    }
+    
+    .level-badge {
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 500;
+      text-transform: capitalize;
+    }
+    
+    .level-beginner { background: #e6fffa; color: #234e52; }
+    .level-intermediate { background: #fef5e7; color: #744210; }
+    .level-advanced { background: #fed7d7; color: #742a2a; }
+    
+    .rating {
+      color: #ed8936;
+      font-weight: 500;
+    }
+    
+    .job-skills,
+    .course-skills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    
+    .skill-tag {
+      background: #e2e8f0;
+      color: #4a5568;
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    
+    .job-meta {
+      display: flex;
+      justify-content: space-between;
+      color: #718096;
+      font-size: 12px;
+    }
+    
+    .source {
+      text-transform: capitalize;
+    }
+    
+    .course-price {
+      color: #38a169;
+      font-weight: 600;
+      font-size: 16px;
+    }
+    
+    .card-actions {
+      display: flex;
+      gap: 12px;
+    }
+    
+    .card-actions .btn {
+      flex: 1;
+      text-align: center;
+    }
+    
+    .loading-container {
+      text-align: center;
+      padding: 60px 20px;
+    }
+    
+    .loading-container p {
+      color: #718096;
+      margin-top: 16px;
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+    }
+    
+    .empty-icon {
+      font-size: 64px;
+      margin-bottom: 16px;
+    }
+    
+    .empty-state h3 {
+      color: #1a202c;
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    
+    .empty-state p {
+      color: #718096;
+      margin-bottom: 24px;
+    }
+    
+    @media (max-width: 768px) {
+      .recommendations-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .content-header {
+        flex-direction: column;
+        gap: 16px;
+        align-items: stretch;
+      }
+    }

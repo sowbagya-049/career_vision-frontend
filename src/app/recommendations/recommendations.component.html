@@ -1,0 +1,159 @@
+<div class="recommendations-container">
+      <div class="container">
+        <div class="recommendations-header">
+          <h1>Recommendations</h1>
+          <p>Personalized job opportunities and courses based on your profile</p>
+          
+          <div class="tab-controls">
+            <button 
+              class="tab-btn"
+              [class.active]="activeTab === 'jobs'"
+              (click)="activeTab = 'jobs'"
+            >
+              💼 Jobs ({{ jobs.length }})
+            </button>
+            <button 
+              class="tab-btn"
+              [class.active]="activeTab === 'courses'"
+              (click)="activeTab = 'courses'"
+            >
+              📚 Courses ({{ courses.length }})
+            </button>
+          </div>
+        </div>
+        
+        <!-- Jobs Tab -->
+        <div class="tab-content" *ngIf="activeTab === 'jobs'">
+          <div class="content-header">
+            <h2>Job Opportunities</h2>
+            <button class="btn btn-secondary" (click)="refreshRecommendations()">
+              Refresh
+            </button>
+          </div>
+          
+          <div class="recommendations-grid" *ngIf="!isLoading">
+            <div class="job-card" *ngFor="let job of jobs">
+              <div class="card-header">
+                <div class="job-title">
+                  <h3>{{ job.title }}</h3>
+                  <span class="match-score">{{ job.matchScore }}% match</span>
+                </div>
+                <div class="job-company">
+                  <strong>{{ job.company }}</strong>
+                  <span>{{ job.location }}</span>
+                </div>
+              </div>
+              
+              <div class="job-details">
+                <p class="job-description">{{ job.description }}</p>
+                
+                <div class="job-salary" *ngIf="job.salary">
+                  💰 {{ job.salary }}
+                </div>
+                
+                <div class="job-skills">
+                  <span class="skill-tag" *ngFor="let skill of job.skills.slice(0, 5)">
+                    {{ skill }}
+                  </span>
+                </div>
+                
+                <div class="job-meta">
+                  <span class="source">Source: {{ job.source }}</span>
+                  <span class="posted-date">{{ formatDate(job.postedDate) }}</span>
+                </div>
+              </div>
+              
+              <div class="card-actions">
+                <a [href]="job.url" target="_blank" class="btn btn-primary">
+                  Apply Now
+                </a>
+                <button class="btn btn-secondary">Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Courses Tab -->
+        <div class="tab-content" *ngIf="activeTab === 'courses'">
+          <div class="content-header">
+            <h2>Recommended Courses</h2>
+            <button class="btn btn-secondary" (click)="refreshRecommendations()">
+              Refresh
+            </button>
+          </div>
+          
+          <div class="recommendations-grid" *ngIf="!isLoading">
+            <div class="course-card" *ngFor="let course of courses">
+              <div class="card-header">
+                <div class="course-title">
+                  <h3>{{ course.title }}</h3>
+                  <span class="match-score">{{ course.matchScore }}% match</span>
+                </div>
+                <div class="course-provider">
+                  <strong>{{ course.provider }}</strong>
+                  <span *ngIf="course.instructor">by {{ course.instructor }}</span>
+                </div>
+              </div>
+              
+              <div class="course-details">
+                <p class="course-description">{{ course.description }}</p>
+                
+                <div class="course-meta">
+                  <div class="meta-item">
+                    <span class="meta-label">Duration:</span>
+                    <span>{{ course.duration }}</span>
+                  </div>
+                  <div class="meta-item">
+                    <span class="meta-label">Level:</span>
+                    <span class="level-badge" [ngClass]="'level-' + course.level">
+                      {{ course.level }}
+                    </span>
+                  </div>
+                  <div class="meta-item">
+                    <span class="meta-label">Rating:</span>
+                    <span class="rating">
+                      {{ course.rating }}/5 ⭐
+                    </span>
+                  </div>
+                </div>
+                
+                <div class="course-skills">
+                  <span class="skill-tag" *ngFor="let skill of course.skills.slice(0, 4)">
+                    {{ skill }}
+                  </span>
+                </div>
+                
+                <div class="course-price">
+                  {{ course.price }}
+                </div>
+              </div>
+              
+              <div class="card-actions">
+                <a [href]="course.url" target="_blank" class="btn btn-primary">
+                  Enroll Now
+                </a>
+                <button class="btn btn-secondary">Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="loading-container" *ngIf="isLoading">
+          <div class="loading-spinner"></div>
+          <p>Loading recommendations...</p>
+        </div>
+        
+        <div class="empty-state" *ngIf="!isLoading && activeTab === 'jobs' && jobs.length === 0">
+          <div class="empty-icon">💼</div>
+          <h3>No job recommendations found</h3>
+          <p>Upload your resume to get personalized job recommendations</p>
+          <button class="btn btn-primary" routerLink="/resume-upload">Upload Resume</button>
+        </div>
+        
+        <div class="empty-state" *ngIf="!isLoading && activeTab === 'courses' && courses.length === 0">
+          <div class="empty-icon">📚</div>
+          <h3>No course recommendations found</h3>
+          <p>Complete your profile to get personalized course recommendations</p>
+        </div>
+      </div>
+    </div>
