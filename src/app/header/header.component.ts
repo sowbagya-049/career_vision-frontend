@@ -5,6 +5,7 @@ import { AuthService } from '../auth/auth.service';
 import { Observable } from 'rxjs';
 import { User } from '../core/models/user.model';
 
+// Header component with navigation and user info
 @Component({
   selector: 'app-header',
   template: `

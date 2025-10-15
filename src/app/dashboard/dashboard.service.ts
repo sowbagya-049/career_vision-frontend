@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ApiService, ApiResponse } from '../core/services/api.service';
 
+// Interfaces for dashboard data
 export interface DashboardStats {
   totalMilestones: number;
   totalRecommendations: number;

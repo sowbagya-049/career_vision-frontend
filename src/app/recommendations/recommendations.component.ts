@@ -4,6 +4,7 @@ import { RecommendationsService } from './recommendations.service';
 import { Job } from './models/job.model';
 import { Course } from './models/course.model';
 
+// recommemdations
 @Component({
   selector: 'app-recommendations',
   standalone: true,
